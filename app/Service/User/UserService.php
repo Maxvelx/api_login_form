@@ -19,6 +19,7 @@ class UserService
                 foreach ($arr as $item) {
                     if ($item['email'] === $data['email']) {
                         $data['error'] = 'Користувач з таким email вже є в базі';
+                        $data['time'] = date('d-m-Y H:i:s');
                         $log[]         = $data;
                         file_put_contents(storage_path('logs/test.log'), json_encode($log));
 
