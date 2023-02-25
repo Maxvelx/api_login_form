@@ -10,14 +10,14 @@ class UserService
     public function store($data)
     {
 
-        $arr = json_decode(file_get_contents(storage_path('/app/users/users.txt')), true);
+        $users = json_decode(file_get_contents(storage_path('/app/users/users.txt')), true);
         $log = json_decode(file_get_contents(storage_path('logs/test.log')), true);;
 
         try {
             $data['password'] = Hash::make($data['password']);
-            if (isset($arr)) {
-                foreach ($arr as $item) {
-                    if ($item['email'] === $data['email']) {
+            if (isset($users)) {
+                foreach ($users as $user) {
+                    if ($user['email'] === $data['email']) {
                         $data['error'] = 'Користувач з таким email вже є в базі';
                         $data['time'] = date('d-m-Y H:i:s');
                         $log[]         = $data;
@@ -28,8 +28,8 @@ class UserService
                 }
             }
 
-            $arr[] = $data;
-            file_put_contents(storage_path('app/users/users.txt'), json_encode($arr));
+            $users[] = $data;
+            file_put_contents(storage_path('app/users/users.txt'), json_encode($users));
 
             return response(status: 201);
 
